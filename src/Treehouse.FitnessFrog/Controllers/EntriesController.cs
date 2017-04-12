@@ -43,6 +43,11 @@ namespace Treehouse.FitnessFrog.Controllers
         {
             return View();
         }
+        [HttpPost, ActionName("Add")]
+        public ActionResult AddPost()
+        {
+            return View();
+        }
 
         public ActionResult Edit(int? id)
         {
