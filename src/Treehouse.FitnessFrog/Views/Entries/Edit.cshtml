@@ -1,7 +1,9 @@
 ﻿@model Treehouse.FitnessFrog.Models.Entry
-@using Treehouse.FitnessFrog.Models
+
 @{
     ViewBag.Title = "Edit Entry";
 }
 
 <h2>@ViewBag.Title</h2>
+
+@Html.Partial("_EntryForm")
