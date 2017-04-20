@@ -113,7 +113,7 @@ namespace Treehouse.FitnessFrog.Controllers
             {
                 return HttpNotFound();
             }
-            return View(entry.Id);
+            return View(entry);
         }
         [HttpPost]
         public ActionResult Delete(int id)
