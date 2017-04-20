@@ -53,22 +53,20 @@ namespace Treehouse.FitnessFrog.Controllers
         [HttpPost]
         public ActionResult Add(Entry entry)
         {
-            //if there aren't any "Duration" field validation errors
-            //then make sure that the duration is greater than "0"
-            if(ModelState.IsValidField("Duration") && entry.Duration <= 0)
-            {
-                ModelState.AddModelError("Duration", "La duracion debe ser mayor a 0");
-            }
+            //validate entry
+            ValidateEntry(entry);
+            //check if the entry is valid
             if (ModelState.IsValid)
             {
                 _entriesRepository.AddEntry(entry);
                 return RedirectToAction("Index");
-
-
             }
-            ViewBag.ActivitiesSelectListItems = new SelectList(Data.Data.Activities, "Id", "Name");
+            PopulateActivityListItems();
             return View(entry);
         }
+
+   
+
 
         public ActionResult Edit(int? id)
         {
@@ -77,7 +75,32 @@ namespace Treehouse.FitnessFrog.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            return View();
+            //TODO  get the requested entry from the repository
+            Entry entry = _entriesRepository.GetEntry((int)id);
+            //TODO return "entry" Not found if the entry wasn't found
+            if( entry == null)
+            {
+               return HttpNotFound();
+            }
+            PopulateActivityListItems();
+            return View(entry);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Entry entry)
+        {
+            ValidateEntry(entry);
+            //if the entry is valid
+            if (ModelState.IsValid)
+            {
+                //update the entry using repository
+                _entriesRepository.UpdateEntry(entry);
+                //redirect to index view, where al entries are listed
+                return RedirectToAction("Index");
+            }
+            //TODO populate the entry list items viewbag
+            PopulateActivityListItems();
+            return View(entry);
         }
 
         public ActionResult Delete(int? id)
@@ -88,6 +111,20 @@ namespace Treehouse.FitnessFrog.Controllers
             }
 
             return View();
+        }
+
+        private void ValidateEntry(Entry entry)
+        {
+            //if there aren't any "Duration" field validation errors
+            //then make sure that the duration is greater than "0"
+            if (ModelState.IsValidField("Duration") && entry.Duration <= 0)
+            {
+                ModelState.AddModelError("Duration", "La duracion debe ser mayor a 0");
+            }
+        }
+        private void PopulateActivityListItems()
+        {
+            ViewBag.ActivitiesSelectListItems = new SelectList(Data.Data.Activities, "Id", "Name");
         }
     }
 }
