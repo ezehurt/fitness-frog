@@ -20,7 +20,7 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.ActivityId, new { @class = "control-label" })
                 @Html.DropDownListFor(m => m.ActivityId,
-                        (SelectList)ViewBag.ActivitiesSelectListItems, new { @class = "form-control" })
+                        (SelectList)ViewBag.ActivitiesSelectListItems, " " , new { @class = "form-control" })
 
             </div>
 
